@@ -20,4 +20,10 @@ public interface CustomerService {
      * @return
      */
     public CustomerDto getCustomerById(UUID customerId);
+
+    public CustomerDto saveNewCustomer(CustomerDto customerDto);
+
+    public void updateCustomer(UUID customerId, CustomerDto customerDto);
+
+    public void deleteById(UUID customerId);
 }
