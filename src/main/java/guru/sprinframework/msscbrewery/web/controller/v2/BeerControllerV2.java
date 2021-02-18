@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package guru.sprinframework.msscbrewery.web.controller;
+package guru.sprinframework.msscbrewery.web.controller.v2;
 
-import guru.sprinframework.msscbrewery.services.BeerService;
-import guru.sprinframework.msscbrewery.web.model.BeerDto;
+import guru.sprinframework.msscbrewery.services.v2.BeerServiceV2;
+import guru.sprinframework.msscbrewery.web.model.v2.BeerDtoV2;
 import java.util.UUID;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,18 +23,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  *
  * @author Carlos
- * @since 1
- * @deprecated Se debe emplear /api/v2/beer
  */
-@Deprecated(forRemoval = true,since = "1")
 @RestController
-@RequestMapping("/api/v1/beer")
-public class BeerController {
+@RequestMapping("/api/v2/beer")
+public class BeerControllerV2 {
 
-    private final BeerService beerService;
+    private final BeerServiceV2 beerServiceV2;
 
-    public BeerController(BeerService beerService) {
-        this.beerService = beerService;
+    public BeerControllerV2(BeerServiceV2 beerService) {
+        this.beerServiceV2 = beerService;
     }
 
     /**
@@ -44,8 +41,8 @@ public class BeerController {
      * @return Cerveza
      */
     @GetMapping("/{beerId}")
-    public ResponseEntity<BeerDto> getBeer(@PathVariable(name = "beerId") UUID beerId) {
-        return new ResponseEntity<>(this.beerService.getBeerById(beerId), HttpStatus.OK);
+    public ResponseEntity<BeerDtoV2> getBeer(@PathVariable(name = "beerId") UUID beerId) {
+        return new ResponseEntity<>(this.beerServiceV2.getBeerById(beerId), HttpStatus.OK);
     }
 
     /**
@@ -55,8 +52,8 @@ public class BeerController {
      * @return Cerveza creada
      */
     @PostMapping
-    public ResponseEntity handlePost(BeerDto beerDto) {
-        BeerDto saveDto = this.beerService.saveNewBeer(beerDto);
+    public ResponseEntity handlePost(BeerDtoV2 beerDto) {
+        BeerDtoV2 saveDto = this.beerServiceV2.saveNewBeer(beerDto);
         HttpHeaders headers = new HttpHeaders();
         // TODO hay que agregar el url completo
         headers.add("Location", "/api/v1/beer" + saveDto.getId().toString());
@@ -71,8 +68,8 @@ public class BeerController {
      * @return
      */
     @PutMapping("/{beerId}")
-    public ResponseEntity handleUpdate(@PathVariable(name = "beerId") UUID beerId, BeerDto beerDto) {
-        this.beerService.updateBeer(beerId, beerDto);
+    public ResponseEntity handleUpdate(@PathVariable(name = "beerId") UUID beerId, BeerDtoV2 beerDto) {
+        this.beerServiceV2.updateBeer(beerId, beerDto);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -84,6 +81,6 @@ public class BeerController {
     @DeleteMapping("/{beerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBeer(@PathVariable(name = "beerId") UUID beerId) {
-        this.beerService.deleteById(beerId);
+        this.beerServiceV2.deleteById(beerId);
     }
 }
